@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Quiz - ポケモンクイズ</title>
+    <link rel="stylesheet" href="https://assets.myu-jp.f5.si/css/base.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="ball"></div>ポケモンクイズ
+    </header>
+    <main>
+        <div class="card" id="mainContainer">
+            <h2>ポケモンクイズ</h2>
+            <input id="roomId" type="text" placeholder="ルームIDを入力">
+            <button id="bJoinRoom">部屋に参加</button>
+        </div>
+    </main>
+    <script>
+        $=(selector)=>document.querySelector(selector);
+        $("#bJoinRoom").addEventListener("click",()=>{
+            location.assign(`/room/?id=${$("#roomId").value}`);
+        });
+    </script>
+</body>
+</html>
