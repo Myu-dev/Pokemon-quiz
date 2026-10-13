@@ -1,6 +1,7 @@
 const TRYSTERO="https://cdn.jsdelivr.net/npm/trystero@0.21/+esm";
 
-export async function joinRoom({APP_ID,roomId,name=`player${Math.floor(Math.random()*9999)}`,log=console.log}){
+export async function joinRoom({APP_ID,roomId,name,log=console.log}){
+    name=name?.trim()||`player${Math.floor(Math.random()*9999).padStart(4,"0")}`;
     let T;
     try{T=await import(TRYSTERO);}
     catch(e){throw new Error("ライブラリ読み込み失敗: "+e.message);
@@ -13,9 +14,9 @@ export async function joinRoom({APP_ID,roomId,name=`player${Math.floor(Math.rand
     log("ルームに参加 roomId:"+roomId);
     const members=new Map([[selfId,name]]);
     const [sendHandshake,getHandshake]=room.makeAction("handshake");
-    getHandshake((data,peerId)=>{members.set(id,{name:d.name});log(d.name+"が参加しました id: "+id);});
+    getHandshake((data,peerId)=>{members.set(peerId,{name:data.name});log(data.name+"が参加しました id: "+peerId);});
     room.onPeerJoin(id=>{sendHandshake({name},id);});
-    room.onPeerLeave(id=>{members.delete(id);log("相手が退出しました id: "+id)});
+    room.onPeerLeave(id=>{log(members.get("id")??id+"が退出しました id: "+id);members.delete(id);});
 
     const events={};
     const defineEvent=(name,onReceive)=>{
@@ -31,5 +32,5 @@ export async function joinRoom({APP_ID,roomId,name=`player${Math.floor(Math.rand
         events[name]=(data,to)=>{send(data,to);};
         return events[name];
     }
-    return {selfId,room,defineEvent};
+    return {selfId,room,members,defineEvent};
 }

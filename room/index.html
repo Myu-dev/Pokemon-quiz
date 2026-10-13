@@ -24,7 +24,7 @@
         async function  init() {
             let net;
             try{
-                net=await joinRoom({APP_ID,roomId,log});
+                net=await joinRoom({APP_ID,roomId,name,log});
             }catch(e){
                 log(e);
             }
