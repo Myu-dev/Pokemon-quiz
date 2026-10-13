@@ -16,7 +16,7 @@
         const APP_ID="myu-pokemon-quiz";
         const q=new URLSearchParams(window.location.search);
         const roomId=q.get("id");
-        $=(selector)=>document.querySelector(selector);
+        const $=(selector)=>document.querySelector(selector);
         const logEl=$("main");
         const log=m=>{const t=new Date().toTimeString().slice(0,8);logEl.textContent+=`[${t}] ${m}\n`;logEl.scrollTop=logEl.scrollHeight};
 
