@@ -15,13 +15,14 @@
         <div class="card" id="mainContainer">
             <h2>ポケモンクイズ</h2>
             <input id="roomId" type="text" placeholder="ルームIDを入力">
+            <input id="name" type="text" placeholder="名前を入力">
             <button id="bJoinRoom">部屋に参加</button>
         </div>
     </main>
     <script>
         $=(selector)=>document.querySelector(selector);
         $("#bJoinRoom").addEventListener("click",()=>{
-            location.assign(`./room/?id=${$("#roomId").value}`);
+            location.assign(`./room/?id=${$("#roomId").value}&name=${$("#name").value}`);
         });
     </script>
 </body>
