@@ -13,11 +13,11 @@ export async function joinRoom({APP_ID,roomId,name,log=console.log}){
     log("ルームに参加 roomId:"+roomId);
     const members=new Map([[selfId,{name}]]);
     const getHostId=()=>[...members].map(([id])=>id).sort()[0]||null;;
-    const isHost=(id)=>getHostId===id;
+    const isHost=(id)=>getHostId()===id;
     const [sendHandshake,getHandshake]=room.makeAction("handshake");
     getHandshake((data,peerId)=>{members.set(peerId,{name:data.name});log(data.name+"が参加しました id: "+peerId);});
     room.onPeerJoin(id=>{sendHandshake({name},id);});
-    room.onPeerLeave(id=>{log(`${members.get(id).name??id}が退出しました id: ${id}`);members.delete(id);});
+    room.onPeerLeave(id=>{log(`${members.get(id)?.name??id}が退出しました id: ${id}`);members.delete(id);});
 
     const events={};
     const makeAction=(name,onReceive)=>{
