@@ -12,12 +12,12 @@ export async function joinRoom({APP_ID,roomId,name,log=console.log}){
     catch(e){throw new Error("ルーム参加に失敗: "+e.message);}
     log("ルームに参加 roomId:"+roomId);
     const members=new Map([[selfId,{name}]]);
-    const getHostId=()=>{[...members].map(([id])=>id).sort()[0]||null;};
+    const getHostId=()=>[...members].map(([id])=>id).sort()[0]||null;;
     const isHost=(id)=>getHostId===id;
     const [sendHandshake,getHandshake]=room.makeAction("handshake");
     getHandshake((data,peerId)=>{members.set(peerId,{name:data.name});log(data.name+"が参加しました id: "+peerId);});
     room.onPeerJoin(id=>{sendHandshake({name},id);});
-    room.onPeerLeave(id=>{log(members.get("id").name??id+"が退出しました id: "+id);members.delete(id);});
+    room.onPeerLeave(id=>{log(`${members.get(id).name??id}が退出しました id: ${id}`);members.delete(id);});
 
     const events={};
     const makeAction=(name,onReceive)=>{
@@ -36,9 +36,9 @@ export async function joinRoom({APP_ID,roomId,name,log=console.log}){
     return {
         selfId,
         room,
-        members:[...members].map([id,v]=>{id,name:v.name,isHost:isHost(id)}),
-        hostId:()=>getHostId(),
-        isHost:isHost(selfId),
+        members:()=>[...members].map(([id,v])=>({id,name:v.name,isHost:isHost(id)})),
+        hostId:getHostId,
+        isHost:()=>isHost(selfId),
         makeAction
     };
 }

@@ -25,7 +25,7 @@
             let net;
             try{
                 net=await joinRoom({APP_ID,roomId,name,log});
-                log(`ホストは${net.members.filter(({isHost})=>isHost)[0]}です`);
+                log(`ホストは${net.members().filter(({isHost})=>isHost)[0]}です`);
             }catch(e){
                 log(e);
             }
